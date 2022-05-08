@@ -1,0 +1,11 @@
+parameter,value
+Pi,3.141592653589793
+n,64
+L,26.703537555513243
+eps,0.2
+phiBar,0.2
+phiAmp,0.4
+dx,0.4172427743048944
+dt,0.1
+tStart,0
+tEnd,100.0
