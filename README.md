@@ -13,4 +13,4 @@
 - `pip install -U tensorflow[and-cuda]`
 
 # Install additional packages 
-- `pip3 install pandas jupyterlab matplotlib plotly`
+- `pip3 install pandas jupyterlab matplotlib plotly kaleido`
