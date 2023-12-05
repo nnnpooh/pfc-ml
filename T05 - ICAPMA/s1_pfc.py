@@ -73,9 +73,9 @@ def export_data(data_store_pickle, data_store_json, mode):
 #############################################
 ############## CODE START HERE ##############
 #############################################
-mode = "TRAIN"
-# mode = "TEST"
-repeat = 3
+# mode = "TRAIN"
+mode = "TEST"
+repeat = 10
 
 # Parameters
 n = 32  # Number of grid

@@ -66,7 +66,25 @@ def runModel(
 ############## CODE START HERE ##############
 #############################################
 
-folderName = "2023-12-05-21-55-31"
+dm = {
+    "m1": "2023-12-06-03-06-36",
+    "m2": "2023-12-06-03-06-55",
+    "m4": "2023-12-06-03-07-00",
+    "m8": "2023-12-06-03-07-07",
+    "m16": "2023-12-06-03-07-13",
+    "m32": "2023-12-06-03-07-17",
+    "m64": "2023-12-06-03-07-22",
+}
+
+# modelName = "m1"
+# modelName = "m2"
+# modelName = "m4"
+# modelName = "m8"
+modelName = "m16"
+# modelName = "m32"
+# modelName = "m64"
+
+folderName = dm[modelName]
 
 cwd = sys.path[0]
 folderPath = os.path.join(cwd, "o2_train_data", folderName)
@@ -91,7 +109,6 @@ ConvLSTM = createModel(
 )
 ConvLSTM.summary()
 
-modelName = "m1"
 modelParam = {
     "model": ConvLSTM,
     "cpPath": os.path.join(cwd, "o3_checkpoints", modelName),

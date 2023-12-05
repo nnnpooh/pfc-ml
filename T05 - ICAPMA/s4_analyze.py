@@ -99,9 +99,16 @@ def calculate_mse(X_true, X_pred):
     return L2Array, L2
 
 
-mode = "TRAIN"
-folderNamePFC = "2023-12-05-21-53-54"
-modelName = "m1"
+# modelName = "m1"
+# modelName = "m2"
+# modelName = "m4"
+# modelName = "m8"
+# modelName = "m16"
+# modelName = "m32"
+modelName = "m64"
+
+mode = "TEST"
+folderNamePFC = "2023-12-06-02-58-56"
 model, data_json_model = construct_model(modelName)
 model = load_model_weights(modelName, model)
 data, tArray, _ = get_pfc_data(folderNamePFC, mode)

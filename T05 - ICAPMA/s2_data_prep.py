@@ -38,7 +38,13 @@ def getDataFromSingleRun(folderPath):
 
 # Parameters
 nSeq = 5
-dtSeq = 2 / 8
+# dtSeq = 1 / 8
+# dtSeq = 2 / 8
+# dtSeq = 4 / 8
+# dtSeq = 8 / 8
+# dtSeq = 16 / 8
+# dtSeq = 32 / 8
+dtSeq = 64 / 8
 
 # Data folders
 cwd = sys.path[0]

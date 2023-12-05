@@ -9,6 +9,7 @@ folders = [
     "o3_checkpoints",
     "o3_model_params",
     "o4_analyze",
+    "o5_visualize",
 ]
 
 for folder in folders:
