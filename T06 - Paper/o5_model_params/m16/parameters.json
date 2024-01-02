@@ -1,0 +1,58 @@
+{
+      "s5": {
+            "modelName": "m16",
+            "nSeq": 1,
+            "nRow": 1,
+            "nCol": 128,
+            "nChannel": 1,
+            "cpPath": "o5_checkpoints/m16",
+            "learning_rate": 0.001,
+            "epochs": 2000,
+            "patience": 3
+      },
+      "s4": {
+            "folderNames": [
+                  "2024-01-02-13-00-41",
+                  "2024-01-02-13-00-42"
+            ],
+            "modelName": "m16",
+            "nSeq": 1,
+            "dtSeq": 4.0,
+            "dtBase": 0.25,
+            "X_shape": [
+                  6370,
+                  1,
+                  128
+            ],
+            "y_shape": [
+                  6370,
+                  128
+            ]
+      },
+      "s2": {
+            "n": 128,
+            "L": 106.81415022205297,
+            "eps": 0.2,
+            "dt": 0.25,
+            "mTotal": 3201,
+            "dx": 0.8344855486097889,
+            "tStart": 0,
+            "tEnd": 800,
+            "folderName": "2024-01-02-13-00-26",
+            "sourceFolder": "o1_init_train",
+            "mode": "TRAIN_RUN_BASE"
+      },
+      "s1": {
+            "n": 128,
+            "L": 106.81415022205297,
+            "eps": 0.2,
+            "dt": 0.25,
+            "mTotal": 2,
+            "dx": 0.8344855486097889,
+            "tStart": 0,
+            "tEnd": 0.25,
+            "mode": "TRAIN_INIT",
+            "phiBar": 0.2,
+            "phiAmp": 0.4
+      }
+}
