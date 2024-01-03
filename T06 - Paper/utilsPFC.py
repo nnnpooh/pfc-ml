@@ -56,6 +56,46 @@ def runPFC(n, L, eps, dt, mTotal, mArray, phiInit):
     return data
 
 
+def calcFreeEnergy(data, n, L, eps):
+    feArray = []
+    x_ex = np.linspace(0, L, num=n + 1)  # note that this has n+1 points
+    for m in np.arange(data.shape[0]):
+        # Calculate free energy density
+        phi = data[m, :]
+        k = (
+            2 * np.pi / L * np.concatenate((np.arange(0, n / 2), np.arange(-n / 2, 0)))
+        )  # or np.fft.fftfreq(100, d=dx/L)
+        k2 = np.power(k, 2)
+        k4 = np.power(k, 4)
+
+        phiHat = np.fft.fft(phi)
+        lapTermHat = (k4 - 2 * k2 + 1) * phiHat
+
+        lapTerm = np.fft.ifft(lapTermHat)
+        phi2 = np.power(phi, 2)
+        phi4 = np.power(phi, 4)
+        fed = (-1 / 2 * eps * phi2) + (1 / 2 * phi * lapTerm) + (1 / 4 * phi4)
+        fed = np.real(fed)
+
+        # Integrate
+        fed_ex = np.concatenate(
+            (fed, fed[:1])
+        )  # Create on extra point to complete the period
+        fe = np.trapz(fed_ex, x_ex)
+        feArray.append(fe)
+
+    return feArray
+
+
+def calcPhiAve(data, n):
+    phiAveArray = []
+    for m in np.arange(data.shape[0]):
+        phi = data[m, :]
+        phiAve = np.sum(phi) / n
+        phiAveArray.append(phiAve)
+    return phiAveArray
+
+
 def export_data(data_store_pickle, data_store_json, mode, modelName=""):
     # Make output folder
     timestamp = time.strftime("%Y-%m-%d-%H-%M-%S")

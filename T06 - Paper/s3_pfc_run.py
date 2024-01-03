@@ -1,6 +1,17 @@
 import os, time, sys
-from utils import dKeys, read_data
+from utils import dKeys, read_data, getIdxList
 from utilsPFC import calcTime, runPFC, export_data
+
+
+# Return true data with correct time step for comparison
+def getTrueData(data, tCur, tEnd, dtSeq, dtBase, tArray):
+    idxList, tArrayPred = getIdxList(
+        tCur=tCur, tEnd=tEnd, dtSeq=dtSeq, dtBase=dtBase, tArray=tArray
+    )
+
+    X_true = data[idxList]
+
+    return X_true, tArrayPred
 
 
 #############################################
@@ -49,6 +60,11 @@ for folderName in folderNames:
     folderPath = os.path.join(cwd, sourceFolder, folderName)
     data_pickle, data_json = read_data(folderPath)
 
+    # Base data
+    phiBase = data_pickle["data"]
+    tArrayBase = data_pickle["tArray"]
+    dtBase = data_json["s2"]["dt"]
+
     # Parameters
     n = data_json["s2"]["n"]
     L = data_json["s2"]["L"]
@@ -56,16 +72,17 @@ for folderName in folderNames:
     dx = data_json["s2"]["dx"]
     tStart = data_json["s2"]["tStart"]
     tEnd = data_json["s2"]["tEnd"]
-    dt = data_json["s2"]["dt"] * dtMul
+    dtSeq = dtBase * dtMul
 
-    mTotal, mArray, tArray = calcTime(tStart, tEnd, dt)
+    mTotal, mArray, tArray = calcTime(tStart, tEnd, dtSeq)
 
     dStore = dict(
         n=n,
         L=L,
         eps=eps,
         dx=dx,
-        dt=dt,
+        dtSeq=dtSeq,
+        dt=dtSeq,
         tStart=tStart,
         tEnd=tEnd,
         mTotal=mTotal,
@@ -73,9 +90,11 @@ for folderName in folderNames:
         mArray=mArray,
         modelName=modelName,
         dtMul=dtMul,
-        data=None,
         folderName=folderName,
         sourceFolder=sourceFolder,
+        X_true=None,
+        X_pred=None,
+        tArrayPred=None,
     )
 
     prRunScalar = ["n", "L", "eps", "dt", "mTotal"]
@@ -83,6 +102,7 @@ for folderName in folderNames:
     prRun = [*prRunScalar, *prRunArray]
     prStoreScalar = [
         *prRunScalar,
+        "dtSeq",
         "dtMul",
         "modelName",
         "dx",
@@ -92,12 +112,26 @@ for folderName in folderNames:
         "sourceFolder",
         "mode",
     ]
-    prStoreArray = ["tArray", "data"]
+    prStoreArray = ["X_true", "X_pred", "tArrayPred"]
 
     # Run
-    phiInit = data_pickle["data"][0, :]
+    phiInit = phiBase[0, :]
     paramsDict = dKeys(dStore, prRun)
-    dStore["data"] = runPFC(**paramsDict, phiInit=phiInit)
+    X_pred = runPFC(**paramsDict, phiInit=phiInit)
+
+    # Get true data
+    X_true, tArrayPred = getTrueData(
+        data=phiBase,
+        tCur=tStart,
+        tEnd=tEnd,
+        dtSeq=dtSeq,
+        dtBase=dtBase,
+        tArray=tArrayBase,
+    )
+
+    dStore["X_true"] = X_true
+    dStore["X_pred"] = X_pred
+    dStore["tArrayPred"] = tArrayPred
 
     # Prepare data
     data_store_json = {**dict(s3=dKeys(dStore, prStoreScalar), **data_json)}

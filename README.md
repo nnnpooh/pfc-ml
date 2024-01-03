@@ -20,8 +20,8 @@
 
 ## Install additional packages
 
-- `pip3 install pandas jupyterlab matplotlib plotly kaleido`
+- `pip3 install pandas jupyterlab matplotlib plotly kaleido scikit-learn`
 
 # CPU Only
 
-- `pip3 install tensorflow pandas jupyterlab matplotlib plotly kaleido`
+- `pip3 install tensorflow pandas jupyterlab matplotlib plotly kaleido scikit-learn`

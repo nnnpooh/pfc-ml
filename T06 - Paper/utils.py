@@ -1,5 +1,6 @@
 import os, pickle, json
 import numpy as np
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 
 def dKeys(myDict, keys):
@@ -87,3 +88,17 @@ def getIdxList(tCur, dtSeq, dtBase, tArray, nSeq=None, tEnd=None):
     idxList = np.arange(iCur, iEnd + 1, dtSeq / dtBase).astype(int)
     tList = tArray[idxList]
     return idxList, tList
+
+
+def calculate_err(X_true, X_pred):
+    mseArray = []
+    mapeArray = []
+
+    for m in np.arange(X_true.shape[0]):
+        mseArray.append(mean_squared_error(X_true[m, :], X_pred[m, :]))
+        mapeArray.append(mean_absolute_error(X_true[m, :], X_pred[m, :]))
+
+    mse = np.mean(mseArray)
+    mape = np.mean(mapeArray)
+
+    return mse, mape, mseArray, mapeArray
