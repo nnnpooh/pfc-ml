@@ -6,9 +6,9 @@ from utilsPFC import calcTime, runPFC, export_data
 #############################################
 ############## CODE START HERE ##############
 #############################################
-# mode = "TRAIN_INIT"
-mode = "TEST_INIT"
-repeat = 2
+mode = "TRAIN_INIT"
+# mode = "TEST_INIT"
+repeat = 4
 
 scale = 4
 # Parameters
@@ -38,6 +38,7 @@ dStore = dict(
     mArray=mArray,
     mode=mode,
     data=None,
+    runErr=None,
 )
 
 prRunScalar = ["n", "L", "eps", "dt", "mTotal"]
@@ -51,6 +52,7 @@ prStoreScalar = [
     "mode",
     "phiBar",
     "phiAmp",
+    "runErr",
 ]
 prStoreArray = ["tArray", "data"]
 
@@ -60,7 +62,7 @@ for i in range(0, repeat):
     phi = (phi - phiAve) * phiAmp + phiBar
 
     paramsDict = dKeys(dStore, prRun)
-    dStore["data"] = runPFC(**paramsDict, phiInit=phi)
+    dStore["data"], dStore["runErr"] = runPFC(**paramsDict, phiInit=phi)
 
     # Prepare data
     data_store_json = dict(s1=dKeys(dStore, prStoreScalar))

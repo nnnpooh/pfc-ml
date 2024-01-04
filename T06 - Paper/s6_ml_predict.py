@@ -1,7 +1,7 @@
 import tensorflow as tf
 import os, sys, time
 from utils import (
-    get_latest_checkpoint_folder,
+    get_latest_folder,
     getIdxList,
     store_data,
     read_data,
@@ -13,7 +13,7 @@ from utilsML import createModel
 def load_model_weights(modelName, model):
     cwd = sys.path[0]
     cpPath = os.path.join(cwd, "o5_checkpoints", modelName)
-    latestDir = get_latest_checkpoint_folder(cpPath)
+    latestDir = get_latest_folder(cpPath)
 
     if latestDir is None:
         raise Exception("No folder")
@@ -100,7 +100,8 @@ def calculateForecast(
 modelName = "m16"
 # modelName = "m32"
 
-mode = "TEST_RUN"
+mode = "TRAIN_RUN"
+# mode = "TEST_RUN"
 
 cwd = sys.path[0]
 if mode == "TRAIN_RUN":

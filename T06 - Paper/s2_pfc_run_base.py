@@ -7,8 +7,8 @@ from utilsPFC import calcTime, runPFC, export_data
 ############## CODE START HERE ##############
 #############################################
 
-# mode = "TRAIN_RUN_BASE"
-mode = "TEST_RUN_BASE"
+mode = "TRAIN_RUN_BASE"
+# mode = "TEST_RUN_BASE"
 
 cwd = sys.path[0]
 if mode == "TRAIN_RUN_BASE":
@@ -50,6 +50,7 @@ for folderName in folderNames:
         mArray=mArray,
         mode=mode,
         data=None,
+        runErr=None,
         folderName=folderName,
         sourceFolder=sourceFolder,
     )
@@ -65,13 +66,16 @@ for folderName in folderNames:
         "folderName",
         "sourceFolder",
         "mode",
+        "runErr",
     ]
     prStoreArray = ["tArray", "data"]
 
     # Run
     phiInit = data_pickle["data"][-1, :]
     paramsDict = dKeys(dStore, prRun)
-    dStore["data"] = runPFC(**paramsDict, phiInit=phiInit)
+    dStore["data"], dStore["runErr"] = runPFC(
+        **paramsDict, phiInit=phiInit, printTag=folderName
+    )
 
     # Prepare data
     data_store_json = {**dict(s2=dKeys(dStore, prStoreScalar), **data_json)}

@@ -42,8 +42,8 @@ models = {
 modelName = "p16"
 # p32 results is NaN.
 
-# mode = "TRAIN_RUN"
-mode = "TEST_RUN"
+mode = "TRAIN_RUN"
+# mode = "TEST_RUN"
 
 dtMul = models[modelName]["dtMul"]
 cwd = sys.path[0]
@@ -95,6 +95,7 @@ for folderName in folderNames:
         X_true=None,
         X_pred=None,
         tArrayPred=None,
+        runErr=None,
     )
 
     prRunScalar = ["n", "L", "eps", "dt", "mTotal"]
@@ -111,13 +112,16 @@ for folderName in folderNames:
         "folderName",
         "sourceFolder",
         "mode",
+        "runErr",
     ]
     prStoreArray = ["X_true", "X_pred", "tArrayPred"]
 
     # Run
     phiInit = phiBase[0, :]
     paramsDict = dKeys(dStore, prRun)
-    X_pred = runPFC(**paramsDict, phiInit=phiInit)
+    X_pred, dStore["runErr"] = runPFC(
+        **paramsDict, phiInit=phiInit, printTag=folderName
+    )
 
     # Get true data
     X_true, tArrayPred = getTrueData(

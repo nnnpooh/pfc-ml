@@ -13,7 +13,9 @@ import numpy as np
 #############################################
 
 
-mode = "ML_TEST"
+# mode = "ML_TEST"
+mode = "ML_TRAIN"
+
 # modelName = "m1"
 # modelName = "m2"
 # modelName = "m4"
@@ -24,7 +26,7 @@ modelName = "m16"
 # mode = "PFC_TEST"
 # modelName = "p16"
 
-if mode == "ML_TEST":
+if mode == "ML_TRAIN":
     sourceFolder = "o6_ml_train"
     outputFolder = os.path.join("o7_analyze_train", modelName)
 elif mode == "ML_TEST":

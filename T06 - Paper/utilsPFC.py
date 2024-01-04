@@ -20,9 +20,16 @@ def calcTime(tStart, tEnd, dt):
     return mTotal, mArray, tArray
 
 
-def runPFC(n, L, eps, dt, mTotal, mArray, phiInit):
-    # Parameter for skipping plotting (animation)
-    mPrintSkip = 20
+def runPFC(n, L, eps, dt, mTotal, mArray, phiInit, printTag=""):
+    if printTag:
+        print("----------------------")
+        print(f"Running: {printTag}")
+    # Parameter for skipping plotting
+    numPrint = 10
+    if numPrint < mTotal:
+        mPrintSkip = np.floor(mTotal / numPrint)
+    else:
+        mPrintSkip = 1
 
     phiOld = phiInit
     k = (
@@ -45,15 +52,15 @@ def runPFC(n, L, eps, dt, mTotal, mArray, phiInit):
         phiOld = np.real(phiNew)
 
         if np.isnan(phiOld).sum() > 0:
-            print("Nan detected")
-            return data
+            print("Error: Nan detected")
+            return data, "NAN_DETECTED"
 
         data[m, :] = phiOld
 
-        if np.mod(m, mPrintSkip) == 0:
-            print(m)
+        if np.mod(m, mPrintSkip) == 0 or m == mTotal:
+            print(f"Iteration: {m}")
 
-    return data
+    return data, None
 
 
 def calcFreeEnergy(data, n, L, eps):

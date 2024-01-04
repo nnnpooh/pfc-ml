@@ -2,7 +2,7 @@ import tensorflow as tf
 import os, sys, time
 from tensorflow.keras.callbacks import EarlyStopping
 from utils import (
-    get_latest_checkpoint_folder,
+    get_latest_folder,
     store_data,
     read_data,
     dKeys,
@@ -24,10 +24,10 @@ def runModel(
     cwd = sys.path[0]
     cpPathFull = os.path.join(cwd, cpPath)
     if not (os.path.exists(cpPathFull)):
-        os.mkdir(cpPathFull)
+        os.makedirs(cpPathFull)
         latestDir = None
     else:
-        latestDir = get_latest_checkpoint_folder(cpPathFull)
+        latestDir = get_latest_folder(cpPathFull)
 
     if latestDir:
         print(f"Load model from {latestDir}")
@@ -77,9 +77,8 @@ modelName = "m16"
 # modelName = "m32"
 
 cwd = sys.path[0]
-folderName = get_latest_checkpoint_folder(
-    os.path.join(cwd, "o4_ml_train_data", modelName)
-)
+# Get the latest training data. (Note that this will only use the latest folder from o4.)
+folderName = get_latest_folder(os.path.join(cwd, "o4_ml_train_data", modelName))
 
 folderPath = os.path.join(cwd, "o4_ml_train_data", modelName, folderName)
 data_pickle, data_json = read_data(folderPath)

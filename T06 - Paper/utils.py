@@ -42,7 +42,7 @@ def read_data(folderPath):
     return data_pickle, data_json
 
 
-def get_latest_checkpoint_folder(path):
+def get_latest_folder(path):
     a = os.listdir(path)
     if a:
         a.sort()
