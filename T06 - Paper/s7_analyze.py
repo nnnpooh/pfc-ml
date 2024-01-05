@@ -8,34 +8,72 @@ from utilsPFC import calcFreeEnergy, calcPhiAve
 import numpy as np
 
 
+def getUnprocessedFolders(sourceFolder, outputFolder):
+    cwd = sys.path[0]
+    outputFolderPath = os.path.join(cwd, outputFolder)
+    sourceFolderPath = os.path.join(cwd, sourceFolder)
+
+    sourceFolderNamesAll = os.listdir(sourceFolderPath)
+
+    if os.path.exists(outputFolderPath) == False:
+        return sourceFolderNamesAll
+
+    outputFolderNamesAll = os.listdir(outputFolderPath)
+
+    sourceFolderNamesProcessed = []
+    for fn in outputFolderNamesAll:
+        folderPath = os.path.join(outputFolderPath, fn)
+        _, data_json_pfc = read_data(folderPath)
+        fnb = data_json_pfc["s7"]["folderName"]
+        sourceFolderNamesProcessed.append(fnb)
+
+    sourceFolderNamesUnprocessed = list(
+        set(sourceFolderNamesAll) - set(sourceFolderNamesProcessed)
+    )
+
+    return sourceFolderNamesUnprocessed
+
+
 #############################################
 ############## CODE START HERE ##############
 #############################################
 
 
-# mode = "ML_TEST"
-mode = "ML_TRAIN"
+mode = "TEST"
+# mode = "TRAIN"
 
 # modelName = "m1"
 # modelName = "m2"
-# modelName = "m4"
+modelName = "m4"
 # modelName = "m8"
-modelName = "m16"
+# modelName = "m16"
 # modelName = "m32"
 
-# mode = "PFC_TEST"
+# modelName = "p1"
+# modelName = "p2"
+# modelName = "p4"
+# modelName = "p8"
 # modelName = "p16"
+# modelName = "p32"
 
-if mode == "ML_TRAIN":
+
+if modelName[0] == "m":
+    modelType = "ML"
+elif modelName[0] == "p":
+    modelType = "PFC"
+else:
+    raise ValueError("Unknown model type")
+
+if mode == "TRAIN" and modelType == "ML":
     sourceFolder = "o6_ml_train"
     outputFolder = os.path.join("o7_analyze_train", modelName)
-elif mode == "ML_TEST":
+elif mode == "TEST" and modelType == "ML":
     sourceFolder = "o6_ml_test"
     outputFolder = os.path.join("o7_analyze_test", modelName)
-elif mode == "PFC_TRAIN":
+elif mode == "TRAIN" and modelType == "PFC":
     sourceFolder = "o3_pfc_train"
     outputFolder = os.path.join("o7_analyze_train", modelName)
-elif mode == "PFC_TEST":
+elif mode == "TEST" and modelType == "PFC":
     sourceFolder = "o3_pfc_test"
     outputFolder = os.path.join("o7_analyze_test", modelName)
 else:
@@ -44,13 +82,18 @@ else:
 sourceFolder = os.path.join(sourceFolder, modelName)
 
 cwd = sys.path[0]
-outputFolderPath = os.path.join(cwd, sourceFolder)
-folderNames = os.listdir(outputFolderPath)
+sourceFolderPath = os.path.join(cwd, sourceFolder)
+
+folderNames = getUnprocessedFolders(sourceFolder, outputFolder)
 
 for folderName in folderNames:
-    folderPath = os.path.join(outputFolderPath, folderName)
+    folderPath = os.path.join(sourceFolderPath, folderName)
     print(folderPath)
     data_pickle, data_json = read_data(folderPath)
+
+    if modelType == "PFC" and data_json["s3"]["runErr"]:
+        print("runErr found, skip")
+        continue
 
     L = data_json["s2"]["L"]
     n = data_json["s2"]["n"]

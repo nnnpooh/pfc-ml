@@ -158,3 +158,14 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+o1_init_test/
+o1_init_train/
+o2_base_test/
+o2_base_train/
+o3_pfc_test/
+o4_ml_train_data/
+o5_checkpoints/
+o5_model_params/
+o6_ml_test/
+o7_analyze_test/

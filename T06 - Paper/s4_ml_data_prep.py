@@ -32,6 +32,9 @@ def getDataFromSingleRun(nSeq, dtSeq, dtBase, tArray, data):
 #############################################
 
 models = {
+    "m1": {
+        "dtMul": 1,
+    },
     "m2": {
         "dtMul": 2,
     },
@@ -50,7 +53,7 @@ models = {
 }
 
 # Parameters
-modelName = "m16"
+modelName = "m1"
 nSeq = 1
 
 # Data folders

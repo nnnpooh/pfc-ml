@@ -73,8 +73,8 @@ def runModel(
 # modelName = "m2"
 # modelName = "m4"
 # modelName = "m8"
-modelName = "m16"
-# modelName = "m32"
+# modelName = "m16"
+modelName = "m32"
 
 cwd = sys.path[0]
 # Get the latest training data. (Note that this will only use the latest folder from o4.)

@@ -6,9 +6,9 @@ from utilsPFC import calcTime, runPFC, export_data
 #############################################
 ############## CODE START HERE ##############
 #############################################
-mode = "TRAIN_INIT"
-# mode = "TEST_INIT"
-repeat = 4
+# mode = "TRAIN_INIT"
+mode = "TEST_INIT"
+repeat = 50
 
 scale = 4
 # Parameters

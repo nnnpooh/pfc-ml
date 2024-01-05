@@ -7,8 +7,8 @@ from utilsPFC import calcTime, runPFC, export_data
 ############## CODE START HERE ##############
 #############################################
 
-mode = "TRAIN_RUN_BASE"
-# mode = "TEST_RUN_BASE"
+# mode = "TRAIN_RUN_BASE"
+mode = "TEST_RUN_BASE"
 
 cwd = sys.path[0]
 if mode == "TRAIN_RUN_BASE":
@@ -27,7 +27,7 @@ for folderName in folderNames:
 
     # Setting
     tStart = 0  # Time start
-    tEnd = 800  # Time end
+    tEnd = 400  # Time end
     dt = 1 / 4  # Time step
 
     # Parameters

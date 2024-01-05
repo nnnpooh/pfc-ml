@@ -85,9 +85,9 @@ def calcFreeEnergy(data, n, L, eps):
         fed = np.real(fed)
 
         # Integrate
-        fed_ex = np.concatenate(
-            (fed, fed[:1])
-        )  # Create on extra point to complete the period
+        # Create on extra point to complete the period
+        fed_ex = np.concatenate((fed, fed[:1]))
+        # Calculate free energy
         fe = np.trapz(fed_ex, x_ex)
         feArray.append(fe)
 

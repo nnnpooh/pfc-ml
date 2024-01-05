@@ -89,19 +89,45 @@ def calculateForecast(
     return X_pred, X_true, tArrayPred
 
 
+def getUnprocessedFolders(sourceFolder, outputFolder):
+    cwd = sys.path[0]
+    outputFolderPath = os.path.join(cwd, outputFolder)
+    sourceFolderPath = os.path.join(cwd, sourceFolder)
+
+    sourceFolderNamesAll = os.listdir(sourceFolderPath)
+
+    if os.path.exists(outputFolderPath) == False:
+        return sourceFolderNamesAll
+
+    outputFolderNamesAll = os.listdir(outputFolderPath)
+
+    sourceFolderNamesProcessed = []
+    for fn in outputFolderNamesAll:
+        folderPath = os.path.join(outputFolderPath, fn)
+        _, data_json_pfc = read_data(folderPath)
+        fnb = data_json_pfc["s6"]["folderNameBase"]
+        sourceFolderNamesProcessed.append(fnb)
+
+    sourceFolderNamesUnprocessed = list(
+        set(sourceFolderNamesAll) - set(sourceFolderNamesProcessed)
+    )
+
+    return sourceFolderNamesUnprocessed
+
+
 #############################################
 ############## CODE START HERE ##############
 #############################################
 
 # modelName = "m1"
-# modelName = "m2"
+modelName = "m2"
 # modelName = "m4"
 # modelName = "m8"
-modelName = "m16"
+# modelName = "m16"
 # modelName = "m32"
 
-mode = "TRAIN_RUN"
-# mode = "TEST_RUN"
+# mode = "TRAIN_RUN"
+mode = "TEST_RUN"
 
 cwd = sys.path[0]
 if mode == "TRAIN_RUN":
@@ -112,10 +138,15 @@ elif mode == "TEST_RUN":
     outputFolder = os.path.join("o6_ml_test", modelName)
 else:
     raise ValueError("mode must be either TRAIN_RUN or TEST_RUN")
-outputFolderPath = os.path.join(cwd, sourceFolder)
-folderNames = os.listdir(outputFolderPath)
+sourceFolderPath = os.path.join(cwd, sourceFolder)
+
+folderNames = getUnprocessedFolders(sourceFolder, outputFolder)
+
 for folderName in folderNames:
-    folderPath = os.path.join(outputFolderPath, folderName)
+    print("-----------------------")
+    print(f"Process folder: {folderName}")
+    print("-----------------------")
+    folderPath = os.path.join(sourceFolderPath, folderName)
     data_pickle_pfc, data_json_pfc = read_data(folderPath)
     data = data_pickle_pfc["data"]
     tArray = data_pickle_pfc["tArray"]

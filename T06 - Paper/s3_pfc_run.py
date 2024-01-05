@@ -19,6 +19,9 @@ def getTrueData(data, tCur, tEnd, dtSeq, dtBase, tArray):
 #############################################
 
 models = {
+    "p1": {
+        "dtMul": 1,
+    },
     "p2": {
         "dtMul": 2,
     },
@@ -35,15 +38,15 @@ models = {
         "dtMul": 32,
     },
 }
-
+# modelName = "p1"
 # modelName = "p2"
 # modelName = "p4"
 # modelName = "p8"
-modelName = "p16"
-# p32 results is NaN.
+# modelName = "p16"
+modelName = "p32"
 
-mode = "TRAIN_RUN"
-# mode = "TEST_RUN"
+# mode = "TRAIN_RUN"
+mode = "TEST_RUN"
 
 dtMul = models[modelName]["dtMul"]
 cwd = sys.path[0]
