@@ -72,6 +72,8 @@ def getModelDataNum(modelName, sourceMode, visualizeMode, cutoffRow=None):
                 out=np.zeros_like(diffArray),
                 where=phiAveArrayTrue != 0,
             )
+        elif visualizeMode == "FE":
+            valueArray = np.array(data_pickle["feArrayPred"])
         else:
             raise ValueError("Unknown mode")
 
