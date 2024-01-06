@@ -44,9 +44,9 @@ mode = "TEST"
 
 # modelName = "m1"
 # modelName = "m2"
-modelName = "m4"
+# modelName = "m4"
 # modelName = "m8"
-# modelName = "m16"
+modelName = "m16"
 # modelName = "m32"
 
 # modelName = "p1"
