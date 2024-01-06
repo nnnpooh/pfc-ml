@@ -35,6 +35,7 @@ def getModelDataNum(modelName, sourceMode, visualizeMode, cutoffRow=None):
     folderNames, sourceFolderPath = getFolderNames(modelName, sourceMode)
 
     data = {}
+    dataS7Array = []
     for folderName in folderNames:
         folderPath = os.path.join(sourceFolderPath, folderName)
         data_pickle, data_json = read_data(folderPath)
@@ -46,14 +47,22 @@ def getModelDataNum(modelName, sourceMode, visualizeMode, cutoffRow=None):
         elif visualizeMode == "FE_DIFFERENCE":
             feArrayTrue = np.array(data_pickle["feArrayTrue"])
             feArrayPred = np.array(data_pickle["feArrayPred"])
-            valueArray = np.abs(feArrayTrue - feArrayPred)
+            diffArray = np.abs(feArrayTrue - feArrayPred)
+
+            valueArray = np.divide(
+                diffArray,
+                feArrayTrue,
+                out=np.zeros_like(diffArray),
+                where=feArrayTrue != 0,
+            )
+
         elif visualizeMode == "PHI_AVE":
             phiAveArrayTrue = np.array(data_pickle["phiAveArrayTrue"])
             phiAveArrayPred = np.array(data_pickle["phiAveArrayPred"])
             diffArray = np.abs(phiAveArrayTrue - phiAveArrayPred)
 
             # Cutoff to zero
-            diffArray = np.where(diffArray < 1e-12, 0, diffArray)
+            # diffArray = np.where(diffArray < 1e-12, 0, diffArray)
 
             # Avoid division by zero
             # https://stackoverflow.com/a/37977222
@@ -63,10 +72,14 @@ def getModelDataNum(modelName, sourceMode, visualizeMode, cutoffRow=None):
                 out=np.zeros_like(diffArray),
                 where=phiAveArrayTrue != 0,
             )
-
-            valueArray = diffArray
         else:
             raise ValueError("Unknown mode")
+
+        # Add s7 data
+        s7 = data_json["s7"]
+        s7["sourceFolderName"] = folderName
+        dataS7Array.append(s7)
+
         data[folderName] = valueArray
 
     tArrayPred = data_pickle["tArrayPred"]
@@ -98,7 +111,8 @@ def getModelDataNum(modelName, sourceMode, visualizeMode, cutoffRow=None):
     )
     dfLong["model"] = modelName
 
-    return df, dfLong, dfWide
+    dfS7 = pd.DataFrame.from_records(data=dataS7Array)
+    return df, dfLong, dfWide, dfS7
 
 
 def getModelDataReduce(modelName, sourceMode, visualizeMode, cutoffRow=None):
